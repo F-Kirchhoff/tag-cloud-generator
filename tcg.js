@@ -7,6 +7,11 @@ const getRandomColor = () =>
     .toString(16)
     .padStart(6, "0");
 
+const colorModeMap = {
+  mono: () => "#889",
+  rainbow: getRandomColor,
+};
+
 const options = {
   colorMode: "mono",
   backgroundColor: "#efefff",
@@ -24,12 +29,10 @@ const defaultCanvas = {
   files: {},
 };
 
-const createTag = ({ text, xPos, yPos }) => {
+const createTag = ({ text, xPos, yPos, backgroundColor }) => {
   const width = text.length * 20 + 46;
   const textId = nanoid();
   const boxId = nanoid();
-  const backgroundColor =
-    options.colorMode === "mono" ? "#889" : getRandomColor();
   return [
     {
       id: boxId,
@@ -101,19 +104,24 @@ const createTag = ({ text, xPos, yPos }) => {
 
 // get the specified path on function call
 const filePath = process.argv[2];
-options.colorMode = process.argv[3] || "mono";
-
 if (!filePath) {
   console.error("Error: Please specify a .csv file containing the tags.");
   process.exit(1);
 }
+
+options.colorMode =
+  process.argv.indexOf("--color") > -1
+    ? process.argv[process.argv.indexOf("--color") + 1] || "mono"
+    : "mono";
 
 const data = fs.readFileSync(filePath).toString();
 
 const testTags = data.split(",").map((string) => string.trim());
 
 const elements = testTags.reduce((acc, text) => {
-  if (!acc.length) return [...acc, ...createTag({ text, xPos: 0, yPos: 0 })];
+  const backgroundColor = (colorModeMap[options.colorMode] || (() => "#889"))();
+  if (!acc.length)
+    return [...acc, ...createTag({ text, xPos: 0, yPos: 0, backgroundColor })];
 
   const lastElement = acc[acc.length - 2];
   const currentX = lastElement.x + lastElement.width + 20;
@@ -125,7 +133,7 @@ const elements = testTags.reduce((acc, text) => {
   const yPos = isOverflowingContainer
     ? lastElement.y
     : lastElement.y + lastElement.height + 20;
-  return [...acc, ...createTag({ text, xPos, yPos })];
+  return [...acc, ...createTag({ text, xPos, yPos, backgroundColor })];
 }, []);
 
 const updatedCanvas = {

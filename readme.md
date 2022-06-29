@@ -24,8 +24,10 @@ example:
 node tcg.js tags.csv
 ```
 
-Optional: You can make the tags more colorful by adding a `rainbow` after the specified csv file:
+Optional:
+
+- `--color`: `rainbow`, `mono` (default)
 
 ```bash
-node tcg.js tags.csv rainbow
+node tcg.js tags.csv --color rainbow
 ```
