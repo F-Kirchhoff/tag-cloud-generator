@@ -1,9 +1,17 @@
 import fs from "fs";
 import { nanoid } from "nanoid";
 
+const getRandomColor = () =>
+  "#" +
+  Math.floor(Math.random() * 255 * 255 * 255)
+    .toString(16)
+    .padStart(6, "0");
+
 const options = {
-  colorMode: "rainbow",
+  colorMode: "mono",
+  backgroundColor: "#efefff",
 };
+
 const defaultCanvas = {
   type: "excalidraw",
   version: 2,
@@ -11,21 +19,17 @@ const defaultCanvas = {
   elements: [],
   appState: {
     gridSize: null,
-    viewBackgroundColor: "#ececef",
+    viewBackgroundColor: options.backgroundColor,
   },
   files: {},
 };
-
-const getRandomColor = () =>
-  "#" +
-  Math.floor(Math.random() * 255 * 255 * 255)
-    .toString(16)
-    .padStart(6, "0");
 
 const createTag = ({ text, xPos, yPos }) => {
   const width = text.length * 20 + 46;
   const textId = nanoid();
   const boxId = nanoid();
+  const backgroundColor =
+    options.colorMode === "mono" ? "#889" : getRandomColor();
   return [
     {
       id: boxId,
@@ -35,16 +39,15 @@ const createTag = ({ text, xPos, yPos }) => {
       width,
       height: 66,
       angle: 0,
-      strokeColor: "#000000",
-      backgroundColor:
-        options.colorMode === "rainbow" ? getRandomColor() : "#ccc",
+      strokeColor: "#334",
+      backgroundColor,
       fillStyle: "hachure",
       strokeWidth: 1,
       strokeStyle: "solid",
       roughness: 1,
       opacity: 100,
       groupIds: [],
-      strokeSharpness: "sharp",
+      strokeSharpness: "round",
       seed: 1109829816,
       version: 176,
       versionNonce: 727038904,
@@ -63,12 +66,12 @@ const createTag = ({ text, xPos, yPos }) => {
       id: textId,
       type: "text",
       x: xPos,
-      y: yPos + 10,
+      y: yPos + 12,
       width,
       height: 47,
       angle: 0,
-      strokeColor: "#000000",
-      backgroundColor: "#40c057",
+      strokeColor: "#223",
+      backgroundColor: "#fff",
       fillStyle: "solid",
       strokeWidth: 4,
       strokeStyle: "solid",
@@ -98,7 +101,7 @@ const createTag = ({ text, xPos, yPos }) => {
 
 // get the specified path on function call
 const filePath = process.argv[2];
-options.colorMode = process.argv[3] || "rainbow";
+options.colorMode = process.argv[3] || "mono";
 
 if (!filePath) {
   console.error("Error: Please specify a .csv file containing the tags.");
