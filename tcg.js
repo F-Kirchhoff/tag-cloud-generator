@@ -17,17 +17,18 @@ const fileName =
 
 const options = {
   colorMode: colorFlagIndex > -1 ? process.argv[colorFlagIndex + 1] : null,
-  backgroundColor: "#efefff",
+  backgroundColor: "#efeff5",
 };
 
 const tags = fs
   .readFileSync(filePath)
   .toString()
   .split(",")
-  .map((string) => string.trim());
+  .map((string) => string.trim())
+  .sort(() => Math.random() - 0.5);
 
 const tagCloud = generateTagCloud(tags, options);
 
 fs.writeFileSync(`${fileName}.excalidraw`, JSON.stringify(tagCloud, null, 2));
 
-console.log(`Success! Tags created: \n ${tags.join(", ")}`);
+console.log(`Success! \nTags created: \n${tags.join(", ")}`);
