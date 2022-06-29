@@ -26,7 +26,11 @@ node tcg.js tags.csv
 
 Optional:
 
-- `--color`: `rainbow`, `mono` (default)
+- `--color`
+  - `'#C0DE12'` - custom background color as hex code
+  - `rainbow` - random background color
+
+Example:
 
 ```bash
 node tcg.js tags.csv --color rainbow
