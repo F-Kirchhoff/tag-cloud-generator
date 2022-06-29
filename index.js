@@ -1,5 +1,9 @@
 import fs from "fs";
+import { nanoid } from "nanoid";
 
+const options = {
+  colorMode: "rainbow",
+};
 const defaultCanvas = {
   type: "excalidraw",
   version: 2,
@@ -7,16 +11,24 @@ const defaultCanvas = {
   elements: [],
   appState: {
     gridSize: null,
-    viewBackgroundColor: "#ffffff",
+    viewBackgroundColor: "#ececef",
   },
   files: {},
 };
 
+const getRandomColor = () =>
+  "#" +
+  Math.floor(Math.random() * 255 * 255 * 255)
+    .toString(16)
+    .padStart(6, "0");
+
 const createTag = ({ text, xPos, yPos }) => {
   const width = text.length * 20 + 46;
+  const textId = nanoid();
+  const boxId = nanoid();
   return [
     {
-      id: "cwCOtmajCjowp2dXspYMS",
+      id: boxId,
       type: "rectangle",
       x: xPos,
       y: yPos,
@@ -24,7 +36,8 @@ const createTag = ({ text, xPos, yPos }) => {
       height: 66,
       angle: 0,
       strokeColor: "#000000",
-      backgroundColor: "#ccc",
+      backgroundColor:
+        options.colorMode === "rainbow" ? getRandomColor() : "#ccc",
       fillStyle: "hachure",
       strokeWidth: 1,
       strokeStyle: "solid",
@@ -39,7 +52,7 @@ const createTag = ({ text, xPos, yPos }) => {
       boundElements: [
         {
           type: "text",
-          id: "G4yzI8bJRmMMHIyBQI5JI",
+          id: textId,
         },
       ],
       updated: 1656483559491,
@@ -47,7 +60,7 @@ const createTag = ({ text, xPos, yPos }) => {
       locked: false,
     },
     {
-      id: "G4yzI8bJRmMMHIyBQI5JI",
+      id: textId,
       type: "text",
       x: xPos,
       y: yPos + 10,
@@ -83,10 +96,33 @@ const createTag = ({ text, xPos, yPos }) => {
   ];
 };
 
-const testTags = ["test", "json", "backend", "mongoose"];
+// get the specified path on function call
+const filePath = process.argv[2];
+options.colorMode = process.argv[3] || "rainbow";
 
-const elements = testTags.reduce((acc, text, index) => {
-  return [...acc, ...createTag({ text, xPos: 0, yPos: index * 80 })];
+if (!filePath) {
+  console.error("Error: Please specify a .csv file containing the tags.");
+  process.exit(1);
+}
+
+const data = fs.readFileSync(filePath).toString();
+
+const testTags = data.split(",").map((string) => string.trim());
+
+const elements = testTags.reduce((acc, text) => {
+  if (!acc.length) return [...acc, ...createTag({ text, xPos: 0, yPos: 0 })];
+
+  const lastElement = acc[acc.length - 2];
+  const currentX = lastElement.x + lastElement.width + 20;
+  const nextTagWidth = text.length * 20 + 46;
+
+  const isOverflowingContainer = currentX + nextTagWidth <= 1200;
+
+  const xPos = isOverflowingContainer ? currentX : 0;
+  const yPos = isOverflowingContainer
+    ? lastElement.y
+    : lastElement.y + lastElement.height + 20;
+  return [...acc, ...createTag({ text, xPos, yPos })];
 }, []);
 
 const updatedCanvas = {
