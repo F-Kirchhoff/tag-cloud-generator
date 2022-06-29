@@ -27,11 +27,13 @@ node tcg.js tags.csv
 Optional:
 
 - `--color`
-  - `'#C0DE12'` - custom background color as hex code
-  - `rainbow` - random background color
+  - '#C0DE12' - custom background color as hex code
+  - rainbow - random background color
+- `--name`
+  - <your file name> - custom name for output file
 
 Example:
 
 ```bash
-node tcg.js tags.csv --color rainbow
+node tcg.js tags.csv --color rainbow --name session13
 ```
