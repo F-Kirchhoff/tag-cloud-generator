@@ -2,15 +2,19 @@ import createTag from "./createTag.js";
 import { getRandomColor } from "./utils.js";
 
 const colorModeMap = {
-  mono: () => "#889",
+  default: () => "#889",
   rainbow: getRandomColor,
+  "#": (colorCode) => colorCode,
 };
 
 const generateTagCloud = (tags, options) => {
   const elements = tags.reduce((acc, text) => {
     const backgroundColor = (
-      colorModeMap[options.colorMode] || (() => "#889")
-    )();
+      colorModeMap[options.colorMode[0]] || // check if the colorMode is a hex value
+      colorModeMap[options.colorMode] || // check if the colorMode is specified in modeMap
+      colorModeMap.default
+    )(options.colorMode); // call the function which was selected from the colorModeMap
+
     if (!acc.length)
       return [
         ...acc,
@@ -18,15 +22,17 @@ const generateTagCloud = (tags, options) => {
       ];
 
     const lastElement = acc[acc.length - 2];
-    const currentX = lastElement.x + lastElement.width + 20;
+    const currentXpos = lastElement.x + lastElement.width + 20;
     const nextTagWidth = text.length * 20 + 46;
 
-    const isOverflowingContainer = currentX + nextTagWidth <= 1200;
+    const isOverflowingContainer = currentXpos + nextTagWidth <= 1200;
 
-    const xPos = isOverflowingContainer ? currentX : 0;
+    // if new Element would overfow, put it in the next row
+    const xPos = isOverflowingContainer ? currentXpos : 0;
     const yPos = isOverflowingContainer
       ? lastElement.y
       : lastElement.y + lastElement.height + 20;
+
     return [...acc, ...createTag({ text, xPos, yPos, backgroundColor })];
   }, []);
 
