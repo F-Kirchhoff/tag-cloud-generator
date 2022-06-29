@@ -28,6 +28,7 @@ Optional:
 
 - `--color` - defines the background color of the tag boxes
   - '#C0DE12' - custom background color as hex code
+  - red
   - orange
   - yellow
   - green
