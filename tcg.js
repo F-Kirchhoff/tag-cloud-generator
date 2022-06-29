@@ -16,7 +16,8 @@ const fileName =
   `tag-cloud-${new Date().toISOString().slice(0, 10)}`;
 
 const options = {
-  colorMode: colorFlagIndex > -1 ? process.argv[colorFlagIndex + 1] : "default",
+  colorMode:
+    (colorFlagIndex > -1 && process.argv[colorFlagIndex + 1]) || "default",
   backgroundColor: "#efeff5",
 };
 

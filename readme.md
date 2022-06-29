@@ -26,9 +26,14 @@ node tcg.js tags.csv
 
 Optional:
 
-- `--color`
+- `--color` - defines the background color of the tag boxes
   - '#C0DE12' - custom background color as hex code
-  - rainbow - random background color
+  - orange
+  - yellow
+  - green
+  - blue
+  - violet
+  - rainbow
 - `--name`
   - <your file name> - custom name for output file
 

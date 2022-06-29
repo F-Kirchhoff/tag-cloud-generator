@@ -2,9 +2,15 @@ import createTag from "./createTag.js";
 import { getRandomColor } from "./utils.js";
 
 const colorModeMap = {
-  default: () => "#889",
   rainbow: getRandomColor,
+  red: () => "#da4167",
+  orange: () => "#ca6702",
+  yellow: () => "#ee9b00",
+  green: () => "#99d98c",
+  blue: () => "#168aad",
+  violet: () => "#973aa8",
   "#": (colorCode) => colorCode,
+  default: () => "#889",
 };
 
 const generateTagCloud = (tags, options) => {
