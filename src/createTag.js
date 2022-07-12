@@ -67,7 +67,7 @@ export default ({ text, xPos, yPos, backgroundColor }) => {
       textAlign: "center",
       verticalAlign: "middle",
       baseline: 32,
-      containerId: "cwCOtmajCjowp2dXspYMS",
+      containerId: boxId,
       originalText: text,
     },
   ];
