@@ -24,7 +24,7 @@ const options = {
 const tags = fs
   .readFileSync(filePath)
   .toString()
-  .split(/,|\n/)
+  .split(/[,\n]+/)
   .map((string) => string.trim())
   .sort(() => Math.random() - 0.5);
 
@@ -32,4 +32,8 @@ const tagCloud = generateTagCloud(tags, options);
 
 fs.writeFileSync(`${fileName}.excalidraw`, JSON.stringify(tagCloud, null, 2));
 
-console.log(`Success! \nTags created: \n${tags.join(", ")}`);
+console.log(
+  `Success! \n${tags.length} Tags created: \n${tags[0]}, ... , ${
+    tags[tags.length - 1]
+  }`
+);
