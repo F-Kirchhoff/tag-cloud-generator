@@ -24,7 +24,7 @@ const options = {
 const tags = fs
   .readFileSync(filePath)
   .toString()
-  .split(",")
+  .split(/,|\n/)
   .map((string) => string.trim())
   .sort(() => Math.random() - 0.5);
 
