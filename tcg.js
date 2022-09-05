@@ -26,6 +26,7 @@ const tags = fs
   .toString()
   .split(/[,\n]+/)
   .map((string) => string.trim())
+  .filter((string) => string)
   .sort(() => Math.random() - 0.5);
 
 const tagCloud = generateTagCloud(tags, options);
