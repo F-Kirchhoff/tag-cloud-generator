@@ -1,6 +1,5 @@
 export const getRandomColor = () => {
   const [r, g, b] = HSLToRGB(Math.floor(Math.random() * 360), 90, 65);
-  console.log({ r, g, b });
   return (
     "#" +
     r.toString(16).padStart(2, "0") +
