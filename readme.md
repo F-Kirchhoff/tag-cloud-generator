@@ -14,6 +14,14 @@ npm i
 
 You need to save all tags you want to generate in a .csv file. Separate the tag texts by a **comma and/or line break**. You can also use [this template](template.csv).
 
+You can wrap text in **double quotation marks** to prevent splitting by a comma, e.g:
+
+- `"[a, b, c]"` - here the array is not split in 3 separate tags
+
+For structuring the tags you can write headlines starting with a `#`. They are not turned into tags, e.g:
+
+- `# JS basics` - this line is ignored and not turned into a tag
+
 ## Usage
 
 Call the program with node and specify the csv file you want to use to generate the tags.
