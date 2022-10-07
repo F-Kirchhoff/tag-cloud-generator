@@ -24,9 +24,10 @@ const options = {
 const tags = fs
   .readFileSync(filePath)
   .toString()
-  .split(/[,\n]+/)
+  .split(/(,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)|\n)+/)
   .map((string) => string.trim())
-  .filter((string) => string)
+  .filter((string) => string && !string.startsWith("#") && string !== ",")
+  .map((string) => string.replaceAll('"', ""))
   .sort(() => Math.random() - 0.5);
 
 const tagCloud = generateTagCloud(tags, options);
